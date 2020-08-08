@@ -4,28 +4,30 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/cotrutatiberiu/project-go/src/api/signup"
+	"github.com/cotrutatiberiu/project-go/src/db"
 	"github.com/matryer/way"
-	"gitlab.com/cotrutatiberiu/project-go/src/api/signup"
-	// "gitlab.com/cotrutatiberiu/project-go/src/api/login"
+	// "github.com/cotrutatiberiu/project-go/src/api/login"
 )
 
 type Server struct {
 	Router *way.Router
-	// db
+	db     *db.Database
 	// email
 }
 
 func CreateServer() *Server {
-	s := &Server{way.NewRouter()}
+	server := &Server{way.NewRouter(), &db.Database{}}
 
-	s.createRoutes()
+	server.createRoutes()
+	server.db.Setup()
 
-	s.Router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	server.Router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		fmt.Fprintf(w, "This is not the page you are looking for")
 	})
 
-	return s
+	return server
 }
 
 func (s *Server) createRoutes() {

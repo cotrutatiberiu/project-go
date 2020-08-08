@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"gitlab.com/cotrutatiberiu/project-go/src/db"
+	// "github.com/cotrutatiberiu/project-go/src/db"
 )
 
 type signupPayload struct {
@@ -22,11 +22,11 @@ func HandleSignup() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// result := db.Create("SELECT email FROM accounts WHERE account_id = 7")
 		// values := signupPayload{"a", "a", "a", "a", "a", "a", 1596747588, 1596747588}
-		result := db.Create(`INSERT INTO 
-		accounts(first_name, last_name, user_name, email, language, password, created, updated)
-		VALUES($1, $2, $3, $4, $5, $6, $7, $8);`)
+		// result := db.Create(`INSERT INTO 
+		// accounts(first_name, last_name, user_name, email, language, password, created, updated)
+		// VALUES($1, $2, $3, $4, $5, $6, $7, $8);`)
 
-		fmt.Println(result)
+		// fmt.Println(result)
 	}
 }
 
