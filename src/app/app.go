@@ -31,7 +31,7 @@ func CreateServer() *Server {
 }
 
 func (s *Server) createRoutes() {
-	s.Router.HandleFunc("GET", "/api/signup", signup.HandleSignup())
+	s.Router.HandleFunc("POST", "/api/signup", signup.HandleSignup())
 	// s.Router.HandleFunc("GET", "/api/signup/:id", signup.HandleSignup2())
 	// s.Router.HandleFunc("GET", "/api/login", login.HandleSignup2())
 }

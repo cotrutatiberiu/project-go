@@ -1,30 +1,48 @@
 package signup
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
-
-	// "github.com/cotrutatiberiu/project-go/src/db"
+	"github.com/cotrutatiberiu/project-go/src/db"
 )
 
 type signupPayload struct {
-	firstName string
-	lastName  string
-	userName  string
-	email     string
-	language  string
-	password  string
-	created   int
-	updated   int
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	UserName  string `json:"userName"`
+	Email     string `json:"email"`
+	Language  string `json:"language"`
+	Password  string `json:"password"`
+	Created   int `json:"created"`
 }
 
 func HandleSignup() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		b, err := ioutil.ReadAll(r.Body)
+		defer r.Body.Close()
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+		// Unmarshal
+		var payload signupPayload
+		err = json.Unmarshal(b, &payload)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+		fmt.Println(payload)
 		// result := db.Create("SELECT email FROM accounts WHERE account_id = 7")
 		// values := signupPayload{"a", "a", "a", "a", "a", "a", 1596747588, 1596747588}
-		// result := db.Create(`INSERT INTO 
-		// accounts(first_name, last_name, user_name, email, language, password, created, updated)
-		// VALUES($1, $2, $3, $4, $5, $6, $7, $8);`)
+
+		pool:=db.CreateConnection()
+		result := db.Create(pool,`INSERT INTO
+		accounts(first_name, last_name, user_name, email, language, password, created, updated)
+		VALUES($1, $2, $3, $4, $5, $6, $7, $8);`)
 
 		// fmt.Println(result)
 	}

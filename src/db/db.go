@@ -13,7 +13,7 @@ type Database struct {
 }
 
 func (Database) Setup() {
-	pool := createConnection()
+	pool := CreateConnection()
 
 	createAccountsTable(pool)
 	createCompaniesTable(pool)
@@ -77,7 +77,7 @@ func createCompaniesTable(pool *pgxpool.Pool) {
 	}
 }
 
-func createConnection() *pgxpool.Pool {
+func CreateConnection() *pgxpool.Pool {
 	pool, err := pgxpool.Connect(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
 		log.Printf("Unable to connect to database: %v", err)
