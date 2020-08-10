@@ -1,11 +1,12 @@
-package signup
+package session
 
 import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"github.com/cotrutatiberiu/project-go/src/db"
+
+	"github.com/cotrutatiberiu/project-go/db"
 )
 
 type signupPayload struct {
@@ -15,7 +16,7 @@ type signupPayload struct {
 	Email     string `json:"email"`
 	Language  string `json:"language"`
 	Password  string `json:"password"`
-	Created   int `json:"created"`
+	Created   int    `json:"created"`
 }
 
 func HandleSignup() http.HandlerFunc {
@@ -39,12 +40,12 @@ func HandleSignup() http.HandlerFunc {
 		// result := db.Create("SELECT email FROM accounts WHERE account_id = 7")
 		// values := signupPayload{"a", "a", "a", "a", "a", "a", 1596747588, 1596747588}
 
-		pool:=db.CreateConnection()
-		result := db.Create(pool,`INSERT INTO
+		pool := db.CreateConnection()
+		result := db.Create(pool, `INSERT INTO
 		accounts(first_name, last_name, user_name, email, language, password, created, updated)
 		VALUES($1, $2, $3, $4, $5, $6, $7, $8);`)
 
-		// fmt.Println(result)
+		fmt.Println(result)
 	}
 }
 
@@ -58,7 +59,3 @@ func HandleSignup() http.HandlerFunc {
 // 		fmt.Println(s)
 // 	}
 // }
-
-func handleStuff(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "helo")
-}

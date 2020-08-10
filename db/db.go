@@ -100,14 +100,14 @@ func Create(pool *pgxpool.Pool, query string) string {
 	return result
 }
 
-func Read(pool *pgxpool.Pool, query string){
+func Read(pool *pgxpool.Pool, query string) {
 
 }
 
-func Update(){
+func Update() {
 
 }
 
-func Delete(){
-	
+func Delete() {
+
 }
