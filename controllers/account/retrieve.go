@@ -8,5 +8,5 @@ func (c *Controller) ListAll(w http.ResponseWriter, r *http.Request) {
 }
 
 // List get account by id
-func List(w http.ResponseWriter, r *http.Request) {
+func (c *Controller) List(w http.ResponseWriter, r *http.Request) {
 }
