@@ -1,14 +1,14 @@
 package account
 
 import (
-	"github.com/cotrutatiberiu/project-go/repository"
+	"github.com/cotrutatiberiu/project-go/service"
 )
 
 type Controller struct {
-	repo repository.Account
+	repo service.Account
 }
 
-func New(acct repository.Account) *Controller {
+func New(acct service.Account) *Controller {
 	return &Controller{
 		repo: acct,
 	}

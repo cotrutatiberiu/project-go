@@ -1,28 +1,51 @@
 package session
 
 import (
-	"fmt"
+	"encoding/json"
+	"io/ioutil"
+	"log"
 	"net/http"
-
-	//"github.com/cotrutatiberiu/project-go/db"
-	"github.com/matryer/way"
 )
 
-func HandleLogin() http.HandlerFunc {
-	return handleStuff
+// loginRequest expected json payload
+type loginRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
-func HandleSignup2() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		id := way.Param(r.Context(), "id")
-		fmt.Println(id)
+// loginResponse a dummy response
+type loginResponse struct {
+	Success bool `json:"success"`
+}
 
-		//s := db.ExecuteQuery("SELECT email FROM accounts WHERE account_id = 7")
-		//fmt.Println(s)
+func (c *Controller) Login(w http.ResponseWriter, r *http.Request) {
+	err := func(w http.ResponseWriter, r *http.Request) error {
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			return err
+		}
+		defer r.Body.Close()
 
+		creds := loginRequest{}
+		err = json.Unmarshal(body, &creds)
+		if err != nil {
+			return err
+		}
+		token, err := c.svc.Login(r.Context(), creds.Username, creds.Password)
+		if err != nil {
+			// TODO improve this
+			return json.NewEncoder(w).Encode(loginResponse{})
+		}
+
+		// TODO set cookie
+		log.Printf("new token  %s", token)
+
+		resp := loginResponse{
+			Success: true,
+		}
+		return json.NewEncoder(w).Encode(resp)
+	}(w, r)
+	if err != nil {
+		log.Printf("session.Login %s", err)
 	}
-}
-
-func handleStuff(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "helo")
 }

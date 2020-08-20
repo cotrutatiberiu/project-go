@@ -14,3 +14,8 @@ type Account struct {
 	Created    int64
 	Updated    int64
 }
+
+// Validate account data
+func (a Account) Validate() error {
+	return nil
+}

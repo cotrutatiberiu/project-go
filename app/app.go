@@ -6,15 +6,15 @@ import (
 
 	"github.com/cotrutatiberiu/project-go/controllers/account"
 	"github.com/cotrutatiberiu/project-go/controllers/session"
-	"github.com/cotrutatiberiu/project-go/db"
 	"github.com/cotrutatiberiu/project-go/repository/database"
+	account2 "github.com/cotrutatiberiu/project-go/service/account"
+	session2 "github.com/cotrutatiberiu/project-go/service/session"
 	"github.com/jackc/pgx/v4"
 	"github.com/matryer/way"
 )
 
 type Server struct {
 	Router *way.Router
-	db     *db.Database
 	// email
 }
 
@@ -23,15 +23,15 @@ func CreateServer() *Server {
 
 	server := Server{
 		Router: r,
-		db:     &db.Database{},
 	}
-
-	server.db.Setup()
 
 	// TODO: real db setup here
 	var db *pgx.Conn
 
-	acct := account.New(database.Account(db))
+	acctRepo := database.Account(db)
+	acctSvc := account2.New(acctRepo)
+
+	acct := account.New(acctSvc)
 	// Account CRUD operations
 	r.HandleFunc(http.MethodGet, "/api/account/", acct.ListAll)
 	r.HandleFunc(http.MethodGet, "/api/account/:id", acct.List)
@@ -39,10 +39,10 @@ func CreateServer() *Server {
 	r.HandleFunc(http.MethodPut, "/api/account/:id", acct.Update)
 	r.HandleFunc(http.MethodDelete, "/api/account/:id", acct.Update)
 
+	sess := session.New(session2.New(acctRepo), acctSvc)
 	// Session operations
-	r.HandleFunc("POST", "/api/signup", session.HandleLogin())
-	r.HandleFunc("GET", "/api/signup/:id", session.HandleSignup2())
-	r.HandleFunc("GET", "/api/login", session.HandleSignup2())
+	r.HandleFunc(http.MethodPost, "/api/signup", sess.Signup)
+	r.HandleFunc(http.MethodPost, "/api/login", sess.Login)
 
 	server.Router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)

@@ -2,14 +2,14 @@ package session
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 
-	"github.com/cotrutatiberiu/project-go/db"
+	"github.com/cotrutatiberiu/project-go/models"
 )
 
-type signupPayload struct {
+type signupRequest struct {
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
 	UserName  string `json:"userName"`
@@ -19,43 +19,47 @@ type signupPayload struct {
 	Created   int    `json:"created"`
 }
 
-func HandleSignup() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		b, err := ioutil.ReadAll(r.Body)
-		defer r.Body.Close()
-		if err != nil {
-			http.Error(w, err.Error(), 500)
-			return
-		}
-
-		// Unmarshal
-		var payload signupPayload
-		err = json.Unmarshal(b, &payload)
-		if err != nil {
-			http.Error(w, err.Error(), 500)
-			return
-		}
-
-		fmt.Println(payload)
-		// result := db.Create("SELECT email FROM accounts WHERE account_id = 7")
-		// values := signupPayload{"a", "a", "a", "a", "a", "a", 1596747588, 1596747588}
-
-		pool := db.CreateConnection()
-		result := db.Create(pool, `INSERT INTO
-		accounts(first_name, last_name, user_name, email, language, password, created, updated)
-		VALUES($1, $2, $3, $4, $5, $6, $7, $8);`)
-
-		fmt.Println(result)
-	}
+type signupResponse struct {
+	Success bool `json:"success"`
 }
 
-// func HandleSignup2() http.HandlerFunc {
-// 	return func(w http.ResponseWriter, r *http.Request) {
-// 		// fmt.Println(r)
-// 		id := way.Param(r.Context(), "id")
-// 		fmt.Println(id)
+func (c *Controller) Signup(w http.ResponseWriter, r *http.Request) {
+	err := func(w http.ResponseWriter, r *http.Request) error {
 
-// 		s := db.ExecuteQuery("SELECT email FROM accounts WHERE account_id = 7")
-// 		fmt.Println(s)
-// 	}
-// }
+		b, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return err
+		}
+		defer r.Body.Close()
+
+		// Unmarshal
+		acct := signupRequest{}
+		err = json.Unmarshal(b, &acct)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return err
+		}
+		account := models.Account{
+			AccountID: 0,
+			FirstName: acct.FirstName,
+			LastName:  acct.LastName,
+			UserName:  acct.UserName,
+			Email:     acct.Email,
+			Language:  acct.Language,
+		}
+		err = c.acct.Create(r.Context(), &account)
+		if err != nil {
+
+			return err
+		}
+
+		resp := signupResponse{
+			Success: true,
+		}
+		return json.NewEncoder(w).Encode(resp)
+	}(w, r)
+	if err != nil {
+		log.Printf("session.Signup %s", err)
+	}
+}
