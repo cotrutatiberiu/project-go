@@ -1,4 +1,4 @@
-module gitlab.com/cotrutatiberiu/project-go
+module github.com/cotrutatiberiu/project-go
 
 go 1.14
 

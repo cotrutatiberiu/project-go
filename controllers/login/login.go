@@ -18,8 +18,6 @@ func HandleSignup2() http.HandlerFunc {
 		
 		s := db.ExecuteQuery("SELECT email FROM accounts WHERE account_id = 7")
 		fmt.Println(s)
-
-		
 	}
 }
 
