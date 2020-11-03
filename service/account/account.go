@@ -20,11 +20,6 @@ func New(repo repository.Account, db *database.Database) service.Account {
 }
 
 func (service *accountService) Create(ctx context.Context, account *models.Account) error {
-	// err := account.Validate()
-	// if err != nil {
-	// 	return err
-	// }
-
 	conn := service.db.CreateConnection()
 
 	service.accountRepository.Create(conn, ctx, account)

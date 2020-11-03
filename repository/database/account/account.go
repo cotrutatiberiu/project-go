@@ -37,18 +37,6 @@ type dbobj struct {
 
 func (a *account) Create(conn *pgxpool.Pool, ctx context.Context, account *models.Account) {
 
-	// row := conn.QueryRow(ctx, sqlCreateAccount, dbobj{
-	// 	account.FirstName,
-	// 	account.LastName,
-	// 	account.UserName,
-	// 	account.Email,
-	// 	account.Language,
-	// 	account.Password,
-	// 	true,
-	// 	account.Created,
-	// 	account.Updated})
-
-	// fmt.Println(row)
 	tag, err := conn.Exec(ctx,
 		sqlCreateAccount,
 		account.FirstName,
@@ -63,9 +51,9 @@ func (a *account) Create(conn *pgxpool.Pool, ctx context.Context, account *model
 	fmt.Println(tag)
 }
 
-// func Read(pool *pgxpool.Pool, query string) {
+func Read(pool *pgxpool.Pool, ctx context.Context, username string, password string) {
 
-// }
+}
 
 // func Update() {
 

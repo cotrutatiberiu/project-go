@@ -6,8 +6,9 @@ import (
 
 type Controller struct {
 	accountService service.Account
+	validationService service.Validation
 }
 
-func New(accountService service.Account) *Controller {
-	return &Controller{accountService}
+func New(accountService service.Account,validationService service.Validation) *Controller {
+	return &Controller{accountService,validationService}
 }

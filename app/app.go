@@ -11,6 +11,7 @@ import (
 	signupController "github.com/cotrutatiberiu/project-go/controllers/signup"
 	accountRepository "github.com/cotrutatiberiu/project-go/repository/database/account"
 	accountService "github.com/cotrutatiberiu/project-go/service/account"
+	validationService "github.com/cotrutatiberiu/project-go/service/validation"
 )
 
 type Server struct {
@@ -39,7 +40,7 @@ func CreateServer() *Server {
 
 func (server *Server) createRoutes() {
 
-	signupHandler := signupController.New(accountService.New(accountRepository.AccountRepository(), server.db))
+	signupHandler := signupController.New(accountService.New(accountRepository.AccountRepository(), server.db), validationService.New())
 
 	server.Router.HandleFunc(http.MethodPost, "/api/signup", signupHandler.HandlePost)
 	// s.Router.HandleFunc("GET", "/api/signup/:id", signup.HandleSignup2())
