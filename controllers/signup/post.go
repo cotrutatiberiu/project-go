@@ -29,15 +29,13 @@ func (controller *Controller) HandlePost(w http.ResponseWriter, r *http.Request)
 	fmt.Println(payload)
 
 	valid, err := controller.validationService.ValidateSignup(payload)
-	if err != nil {
+	if !valid && err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
 
-	if valid == true {
-		account := payload.ToModel()
+	account := payload.ToModel()
 
-		//TODO: see whatsup with request.context
-		controller.accountService.Create(context.Background(), account)
-	}
+	controller.accountService.Create(context.Background(), account)
+
 }
