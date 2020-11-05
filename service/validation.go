@@ -1,9 +1,7 @@
 package service
 
-import "github.com/cotrutatiberiu/project-go/models"
+import "github.com/cotrutatiberiu/project-go/dto"
 
 type Validation interface {
-	ValidateSignup(signupPayload models.SignupPayload) (bool, error)
+	ValidateSignup(signupPayload dto.SignupPayload) (bool, error)
 }
-
-

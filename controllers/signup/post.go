@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/cotrutatiberiu/project-go/models"
+	"github.com/cotrutatiberiu/project-go/dto"
 )
 
 func (controller *Controller) HandlePost(w http.ResponseWriter, r *http.Request) {
@@ -19,7 +19,7 @@ func (controller *Controller) HandlePost(w http.ResponseWriter, r *http.Request)
 	}
 
 	// Unmarshal
-	var payload models.SignupPayload
+	var payload dto.SignupPayload
 	err = json.Unmarshal(b, &payload)
 	if err != nil {
 		http.Error(w, err.Error(), 500)

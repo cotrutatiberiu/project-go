@@ -1,6 +1,10 @@
-package models
+package dto
 
-import "time"
+import (
+	"time"
+
+	"github.com/cotrutatiberiu/project-go/models"
+)
 
 type SignupPayload struct {
 	FirstName string `json:"firstName"`
@@ -9,11 +13,10 @@ type SignupPayload struct {
 	Email     string `json:"email"`
 	Language  string `json:"language"`
 	Password  string `json:"password"`
-	// Created   int64  `json:"created"`
 }
 
-func (payload SignupPayload) ToModel() *Account {
-	return &Account{
+func (payload SignupPayload) ToModel() *models.Account {
+	return &models.Account{
 		FirstName: payload.FirstName,
 		LastName:  payload.LastName,
 		UserName:  payload.UserName,

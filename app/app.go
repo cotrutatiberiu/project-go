@@ -12,6 +12,8 @@ import (
 	accountRepository "github.com/cotrutatiberiu/project-go/repository/database/account"
 	accountService "github.com/cotrutatiberiu/project-go/service/account"
 	validationService "github.com/cotrutatiberiu/project-go/service/validation"
+
+	"github.com/cotrutatiberiu/project-go/utils"
 )
 
 type Server struct {
@@ -21,6 +23,8 @@ type Server struct {
 }
 
 func CreateServer() *Server {
+
+	utils.New()
 
 	server := Server{
 		Router: way.NewRouter(),

@@ -4,8 +4,9 @@ import (
 	"errors"
 	"log"
 
-	"github.com/cotrutatiberiu/project-go/models"
+	"github.com/cotrutatiberiu/project-go/dto"
 	"github.com/cotrutatiberiu/project-go/service"
+	"github.com/cotrutatiberiu/project-go/utils"
 	"github.com/go-playground/validator/v10"
 )
 
@@ -16,7 +17,7 @@ func New() service.Validation {
 	return &validationService{}
 }
 
-func (service *validationService) ValidateSignup(signupPayload models.SignupPayload) (bool, error) {
+func (service *validationService) ValidateSignup(signupPayload dto.SignupPayload) (bool, error) {
 	type NewUserRequest struct {
 		FirstName string `validate:"min=8"`
 		LastName  string `validate:"min=8"`
@@ -46,14 +47,13 @@ func (service *validationService) ValidateSignup(signupPayload models.SignupPayl
 		// value most including myself do not usually have code like this.
 		if _, ok := err.(*validator.InvalidValidationError); ok {
 			log.Println(err)
-			return true, errors.New("asd")
+			return true, errors.New("asdASD")
 		}
 
 		for _, err := range err.(validator.ValidationErrors) {
-			log.Printf("%s %s %s %s - %s\n", err.Namespace(), err.Type(), err.Tag(), err.Param(), err.Value())
+			utils.Instance.Logger.Printf("%s %s %s %s - %s\n", err.Namespace(), err.Type(), err.Tag(), err.Param(), err.Value())
 		}
 
-		// from here you can create your own error messages in whatever language you wish
 		return true, errors.New("asd")
 	}
 	return true, errors.New("asd")
