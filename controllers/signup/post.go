@@ -28,8 +28,8 @@ func (controller *Controller) HandlePost(w http.ResponseWriter, r *http.Request)
 
 	fmt.Println(payload)
 
-	valid, err := controller.validationService.ValidateSignup(payload)
-	if !valid && err != nil {
+	err = payload.Validate()
+	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
