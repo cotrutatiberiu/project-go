@@ -2,7 +2,6 @@ package account
 
 import (
 	"context"
-	"errors"
 
 	"github.com/cotrutatiberiu/project-go/models"
 	"github.com/cotrutatiberiu/project-go/repository"
@@ -15,6 +14,7 @@ type accountService struct {
 	db                *database.Database
 }
 
+//New create service
 func New(repo repository.Account, db *database.Database) service.Account {
 	return &accountService{repo, db}
 }
@@ -22,9 +22,9 @@ func New(repo repository.Account, db *database.Database) service.Account {
 func (service *accountService) Create(ctx context.Context, account *models.Account) error {
 	conn := service.db.CreateConnection()
 
-	service.accountRepository.Create(conn, ctx, account)
+	err := service.accountRepository.Create(conn, ctx, account)
 
 	conn.Close()
 
-	return errors.New("asd")
+	return err
 }

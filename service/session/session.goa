@@ -1,0 +1,20 @@
+// package session
+
+// import (
+	// "context"
+	// "errors"
+	// "time"
+
+	// "github.com/cotrutatiberiu/project-go/repository"
+	// "github.com/cotrutatiberiu/project-go/service"
+// )
+
+// type sessionService struct {
+	// privateKey     string        // JWT private key
+	// expireDuration time.Duration // Token expire time
+	// account        repository.Account
+// }
+
+// func New(repo repository.Account) service.Session {
+// 	// return &sessionService
+// }

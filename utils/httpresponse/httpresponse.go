@@ -1,21 +1,16 @@
 package httpresponse
 
-type HttpResponseSuccess struct {
-	status      int
-	location    string
-	description string
-	payload     interface{}
+type Success struct {
+	Status      int         `json:"status"`
+	Location    string      `json:"location"`
+	Description string      `json:"description"`
+	Payload     interface{} `json:"payload"`
 }
 
-type HttpResponseReject struct {
-	status      int
-	location    string
-	description string
-	payload     interface{}
-	err         error
+type Reject struct {
+	Status      int         `json:"status"`
+	Location    string      `json:"location"`
+	Description string      `json:"description"`
+	Payload     interface{} `json:"payload"`
+	Error       error       `json:"error"`
 }
-
-// type Methods interface {
-// 	setSuccessPayload(status int, location string, description string, payload interface{})
-// 	setRejectPayload(status int, location string, description string, e error)
-// }

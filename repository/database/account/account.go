@@ -35,7 +35,7 @@ type dbobj struct {
 	created     int64
 }
 
-func (a *account) Create(conn *pgxpool.Pool, ctx context.Context, account *models.Account) {
+func (a *account) Create(conn *pgxpool.Pool, ctx context.Context, account *models.Account) error {
 
 	tag, err := conn.Exec(ctx,
 		sqlCreateAccount,
@@ -49,6 +49,8 @@ func (a *account) Create(conn *pgxpool.Pool, ctx context.Context, account *model
 		account.Updated)
 	fmt.Println(err)
 	fmt.Println(tag)
+
+	return err
 }
 
 func Read(pool *pgxpool.Pool, ctx context.Context, username string, password string) {

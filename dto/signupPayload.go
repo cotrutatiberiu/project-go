@@ -6,6 +6,7 @@ import (
 	"github.com/go-playground/validator/v10"
 
 	"github.com/cotrutatiberiu/project-go/models"
+	"github.com/cotrutatiberiu/project-go/utils"
 )
 
 type SignupPayload struct {
@@ -30,7 +31,16 @@ func (payload SignupPayload) ToModel() *models.Account {
 	}
 }
 
-// Direct validation
-func (payload SignupPayload) Validate() error {
-	return validator.New().Struct(payload)
+func (payload SignupPayload) Validate() []string {
+	err := validator.New().Struct(payload)
+
+	var errTags []string
+
+	for _, err := range err.(validator.ValidationErrors) {
+		utils.Instance.Logger.Printf("%s %s %s %s - %s\n", err.Namespace(), err.Type(), err.Tag(), err.Param(), err.Value())
+
+		errTags = append(errTags, err.Tag())
+	}
+
+	return errTags
 }

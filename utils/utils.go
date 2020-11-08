@@ -1,14 +1,14 @@
 package utils
 
-type Singleton struct {
-	Logger *Logger
+type singleton struct {
+	Logger *logger
 }
 
-var Instance *Singleton = nil
+var Instance *singleton = nil
 
-func New() *Singleton {
+func New() *singleton {
 	if Instance == nil {
-		Instance = &Singleton{&Logger{}}
+		Instance = &singleton{&logger{}}
 	}
 	return Instance
 }
