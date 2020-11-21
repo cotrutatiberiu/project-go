@@ -5,10 +5,11 @@ import (
 	"encoding/json"
 
 	"fmt"
-	"github.com/cotrutatiberiu/project-go/dto"
-	"github.com/cotrutatiberiu/project-go/utils/httpresponse"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/cotrutatiberiu/project-go/dto"
+	"github.com/cotrutatiberiu/project-go/utils/httpresponse"
 )
 
 func (controller *Controller) HandlePost(w http.ResponseWriter, r *http.Request) {
@@ -40,6 +41,7 @@ func (controller *Controller) HandlePost(w http.ResponseWriter, r *http.Request)
 		w.Header().Add("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(payload)
+	body, err := ioutil.ReadAll(resp.Body)
 
 	}
 
